@@ -2,47 +2,56 @@ package passwordchecker;
 
 import java.util.Scanner;
 
-public class userPassword {
-    private Scanner scanner = new Scanner(System.in);
+public class UserPassword {
 
-    public class checker {
-        public static void main(String[] args) {
-            // more code to come
+    // ✅ For simple “scratch” programs, keep this static so main() can use it.
+    private static final Scanner scanner = new Scanner(System.in);
+
+    // ✅ Enum belongs at class level (easy to reference anywhere in this class)
+    public enum PasswordStrength {
+        WEAK,
+        MEDIUM,
+        STRONG
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to Password Strength Checker");
+        System.out.print("Enter the password you want to check: ");
+
+        String password = getPassword();
+
+        PasswordStrength strength = checkPassword(password);
+        System.out.println("Password strength: " + strength);
+
+        scanner.close();
+    }
+
+    // ✅ Static because main() is static
+    public static String getPassword() {
+        return scanner.nextLine();
+    }
+
+    // ✅ Static helper that returns a PasswordStrength
+    public static PasswordStrength checkPassword(String password) {
+        boolean longEnough = password.length() >= 10;
+        boolean hasUppercase = !password.equals(password.toLowerCase());
+        boolean hasLowercase = !password.equals(password.toUpperCase());
+        boolean hasNumber = password.matches(".*\\d.*");
+        boolean hasSpecial = !password.matches("[a-zA-Z0-9]*");
+
+        if (longEnough && hasUppercase && hasLowercase && hasNumber && hasSpecial) {
+            return PasswordStrength.STRONG;
         }
 
-        public enum PasswordStrength {
-            WEAK,
-            MEDIUM,
-            STRONG
+        if (longEnough && hasUppercase && hasLowercase && hasNumber) {
+            return PasswordStrength.MEDIUM;
         }
 
-        // User to input password
-        public String getPassword() {
-            System.out.print("Enter your password: ");
-            return scanner.nextLine();
+        // You can tweak this logic however you want; keeping your spirit:
+        if (longEnough && (hasUppercase || hasLowercase)) {
+            return PasswordStrength.WEAK;
         }
 
-        // Check if password is strong, medium, or weak
-        public static PasswordStrength checkPassword(String password) {
-            boolean longEnough = password.length() >= 10;
-            boolean hasUppercase = !password.equals(password.toLowerCase());
-            boolean hasLowercase = !password.equals(password.toUpperCase());
-            boolean hasNumber = password.matches(".*\\d.*");
-            boolean hasSpecial = !password.matches("[a-zA-Z0-9]*");
-
-            if (longEnough && hasUppercase && hasLowercase && hasNumber && hasSpecial) {
-                return PasswordStrength.STRONG;
-            }
-
-            if (longEnough && hasUppercase && hasLowercase && hasNumber) {
-                return PasswordStrength.MEDIUM;
-            }
-
-            if (longEnough && hasUppercase && hasLowercase) {
-                return PasswordStrength.WEAK;
-            }
-
-            return PasswordStrength.WEAK; // Default return if password doesn't meet minimum requirements
-        }
+        return PasswordStrength.WEAK;
     }
 }
