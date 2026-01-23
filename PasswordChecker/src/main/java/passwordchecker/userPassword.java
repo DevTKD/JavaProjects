@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class UserPassword {
 
-    // ✅ For simple “scratch” programs, keep this static so main() can use it.
+   
     private static final Scanner scanner = new Scanner(System.in);
 
-    // ✅ Enum belongs at class level (easy to reference anywhere in this class)
+    
     public enum PasswordStrength {
         WEAK,
         MEDIUM,
@@ -26,12 +26,12 @@ public class UserPassword {
         scanner.close();
     }
 
-    // ✅ Static because main() is static
+   
     public static String getPassword() {
         return scanner.nextLine();
     }
 
-    // ✅ Static helper that returns a PasswordStrength
+   
     public static PasswordStrength checkPassword(String password) {
         boolean longEnough = password.length() >= 10;
         boolean hasUppercase = !password.equals(password.toLowerCase());
