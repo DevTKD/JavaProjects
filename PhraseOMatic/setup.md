@@ -1,0 +1,1 @@
+Create a full Java Maven project with the proper folder structure (src/main/java), a demo package, a main class named App, and a pom.xml configured for Java 25.
